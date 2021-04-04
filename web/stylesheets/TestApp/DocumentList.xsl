@@ -49,6 +49,37 @@
 					</label>
 				</div>
 				<div style="margin-top: 10px;">
+					<label>
+						Ключевые слова
+						<select size="2" name="keywords-[]" style="vertical-align:middle;">
+							<xsl:attribute name="multiple"/>
+
+							<xsl:for-each select="$req/req:keyword">
+								<option value="{.}">
+									<xsl:if test="@selected">
+										<xsl:attribute name="selected"/>
+									</xsl:if>
+									<xsl:value-of select="."/>
+								</option>
+							</xsl:for-each>
+						</select>
+					</label>
+				</div>
+				<div style="margin-top: 10px;">
+					<span>Удален?
+						<xsl:for-each select="$req/req:deleted">
+							<label style="margin-right: 5px;">
+								<input type="radio" name="deleted-0" value="{@value}">
+									<xsl:if test="@checked">
+										<xsl:attribute name="checked"/>
+									</xsl:if>
+								</input>
+								<xsl:value-of select="."/>
+							</label>
+						</xsl:for-each>
+					</span>
+				</div>
+				<div style="margin-top: 10px;">
 					<label title="Наименование">
 						Наименование
 						<input type="text" name="name-0" value="{$req/req:name}"/>

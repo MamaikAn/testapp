@@ -11,6 +11,8 @@
 			<xsd:sequence>
 				<xsd:element name="dateStart" type="xsd:date"/>
 				<xsd:element name="dateEnd" type="xsd:date"/>
+				<xsd:element name="keywords" type="xsd:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+				<xsd:element name="deleted" type="xsd:string"/>
 				<xsd:element name="name" type="xsd:string" minOccurs="0" nillable="true"/>
 				<xsd:element name="outputFormat" minOccurs="0" default="html">
 					<xsd:simpleType>

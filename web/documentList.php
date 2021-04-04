@@ -50,7 +50,7 @@ if ($req->outputFormat == 'pdf') {
 
 	$headers = array(
 		"Content-Type: application/pdf",
-		"Content-Disposition: inline; filename*=UTF-8''" . "DocumentList.pdf" //TODO
+		"Content-Disposition: inline; filename*=UTF-8DocumentList.pdf"
 	); 
 
 	foreach ($headers as $h) {
@@ -80,7 +80,16 @@ function documentWriter(XMLWriter &$xw, $req) {
 	//prior to PHP 5.3.6, the charset option was ignored. If you're running an older version of PHP, you must do it like this:
 	//$pdo->exec("set names utf8");
 	$query = "SELECT * FROM document WHERE (docDate BETWEEN :dateStart AND :dateEnd)";
-	$query = "SELECT * FROM document WHERE docDate BETWEEN :dateStart AND :dateEnd";
+	if ($req->keywords) {
+		$query .= " AND (keywords <> '' AND (keywords LIKE '{$req->keywords[0]}' OR keywords LIKE '%, {$req->keywords[0]}' OR keywords LIKE '{$req->keywords[0]},%'";
+		for ($i = 1, $keywords_count = count($req->keywords); $i < $keywords_count; $i++) {
+			$query.=" OR keywords LIKE '{$req->keywords[$i]}' OR keywords LIKE '%, {$req->keywords[$i]}' OR keywords LIKE '{$req->keywords[$i]},%'";
+		}
+		$query.="));";
+	}
+	if ($req->deleted !== NULL) {
+		$query .= " AND (deleted = '{$req->deleted}');";
+	}
 	if ($req->name !== NULL) {
 		$query .= " AND (displayName LIKE '%{$req->name}%');";
 	}
